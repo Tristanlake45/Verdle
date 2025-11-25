@@ -114,7 +114,7 @@
       cursor: pointer;
     }
 
-    /* Hidden input for mobile keyboard */
+    /* Hidden input for mobile/desktop keyboard */
     #hiddenInput {
       position: absolute;
       opacity: 0;
@@ -196,7 +196,7 @@
       <button id="resetBtn">Play Again</button>
     </div>
 
-    <!-- Hidden input to trigger mobile keyboard -->
+    <!-- Hidden input to trigger mobile/desktop keyboard -->
     <input
       id="hiddenInput"
       type="text"
@@ -333,7 +333,7 @@
       document.getElementById("message").textContent = msg;
     }
 
-    // Core key-handling logic shared by desktop + mobile
+    // Core key-handling logic
     function handleKey(key) {
       if (gameOver) return;
 
@@ -360,11 +360,6 @@
       }
     }
 
-    // Desktop / hardware keyboard
-    function handleKeyDown(e) {
-      handleKey(e.key);
-    }
-
     function submitGuess() {
       // Build the guess string from the current row
       let guess = "";
@@ -387,7 +382,7 @@
         setMessage("You got it! 🎉");
         gameOver = true;
         markPlayedToday();
-        if (resetBtn) resetBtn.disabled = true; // optional
+        if (resetBtn) resetBtn.disabled = true;
         return;
       }
 
@@ -398,7 +393,7 @@
         setMessage(`Out of guesses! The word was ${solution}.`);
         gameOver = true;
         markPlayedToday();
-        if (resetBtn) resetBtn.disabled = true; // optional
+        if (resetBtn) resetBtn.disabled = true;
       } else {
         setMessage("Keep going!");
       }
@@ -438,7 +433,7 @@
       return result;
     }
 
-    // Mobile keyboard support via hidden input
+    // Mobile/desktop keyboard support via hidden input only
     const hiddenInput = document.getElementById("hiddenInput");
 
     function focusHiddenInput() {
@@ -447,17 +442,29 @@
       }
     }
 
-    // When the user types into the hidden input (Android/iOS), feed characters into handleKey
     if (hiddenInput) {
+      // Text characters (Android/iOS/desktop)
       hiddenInput.addEventListener("input", (e) => {
         const value = e.target.value;
         if (!value) return;
 
         const char = value[value.length - 1];
+
+        // Clear so it never fills up
         e.target.value = "";
 
-        // Only letters go through here; Enter/Backspace come from keydown usually
-        handleKey(char);
+        // Only process letters here; Enter/Backspace handled in keydown
+        if (/^[a-zA-Z]$/.test(char)) {
+          handleKey(char);
+        }
+      });
+
+      // Handle Enter / Backspace from keyboards
+      hiddenInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === "Backspace") {
+          e.preventDefault();
+          handleKey(e.key);
+        }
       });
     }
 
@@ -465,7 +472,6 @@
     document.addEventListener("click", focusHiddenInput);
     document.addEventListener("touchstart", focusHiddenInput, { passive: true });
 
-    document.addEventListener("keydown", handleKeyDown);
     document.getElementById("resetBtn").addEventListener("click", initGame);
 
     // Initial setup
