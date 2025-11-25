@@ -76,16 +76,18 @@
       border-color: #565758;
     }
 
+    /* Correct letter in correct spot: powder blue */
     .tile.correct {
-      background-color: #6aaa64;
-      border-color: #6aaa64;
-      color: #fff;
+      background-color: #8ECDF8;
+      border-color: #8ECDF8;
+      color: #003049;
     }
 
+    /* Correct letter in wrong spot: light orange */
     .tile.present {
-      background-color: #c9b458;
-      border-color: #c9b458;
-      color: #fff;
+      background-color: #FFC977;
+      border-color: #FFC977;
+      color: #3A2000;
     }
 
     .tile.absent {
@@ -211,47 +213,75 @@
     const MAX_GUESSES = 6;
 
     const VERN_EIDE_WORDS = [
-    "DRIVE","BRAKE","RIDES","MOTOR","GEARS","ALIGN","SPEED","QUICK","TOTAL","SPORT",
-    "COUPE","SEDAN","TRUCK","AXLES","CABIN","PANEL","GUARD","TUNER","FLEET","LEASE",
-    "LOANS","TITLE","TRADE","MODEL","VALUE","PRICE","QUOTE","OFFER","BONUS","SAVES",
-    "DEALS","SALES","OWNER","POWER","FIXED","PARTS","PAINT","WELDS","TOOLS","TORCH",
-    "METAL","FRAME","CLIPS","WIRES","HOSES","BELTS","PUMPS","CLEAN","SCRUB","TOWED",
-    "TOWEL","WAXED","SHINE","BOATS","CANOE","KAYAK","OCEAN","RIVER","SHORE","BEACH",
-    "HULLS","ROPES","CLEAT","WINCH","FLOAT","WATER","WAVES","TIDES","SWIMS","FISHY",
-    "LURES","REELS","HOOKS","BAITS","CATCH","STERN","BOWED","DOCKS","WHARF","RIDER",
-    "DUSTY","DUNES","TRAIL","TRACK","RALLY","CHAIN","GLOVE","HELMS","SUITS","ROLLS",
-    "JUMPS","FLEET","DAILY","CHECK","READY","MILES","ROADS","TRIPS","VISIT","LOCAL",
-    "RIDES","SALES","DEALS","BONUS","VALUE","PRICE","OFFER","QUOTE","TRADE","LEASE",
-    "LOANS","MODEL","STOCK","ORDER","TITLE","TAXES","FEES","COSTS","BUYER","RATES",
-    "TERMS","TRUST","SERVE","CARES","GUIDE","MEETS","HAPPY","SMILE","HONOR","PROUD",
-    "SUNNY","CLOUD","STORM","WINDS","RAINY","CLEAR","BRISK","CHILL","SNOWY","ICING",
-    "FROST","WETLY","DRYER","MOIST","HAZY","GUSTS","HEATS","HOTLY","HUMID","ROADS",
-    "ROUTE","NORTH","SOUTH","EASTS","WESTS","HILLS","RIDGE","RIVER","PLAZA","TOWNS",
-    "CITIES","RURAL","URBAN","LOCAL","METRO","STATE","PATHS","RANCH","VALVE","SPARK",
-    "FIRES","TUNED","OILED","OILER","SHAFT","CRANK","FLUID","MOTOR","WIRES","PIPES",
-    "LINES","JOINT","LEVER","BOOST","TURBO","FUMES","SMOKE","BLADE","SUNNY","LAKES",
-    "PONDS","WATER","WAVES","BEACH","TIDES","SAILS","CREST","BOARD","BOATS","SHIPS",
-    "DOCKS","WHARF","OCEAN","SHORE","COVE","STORM","SWIMS","FLOAT","HONDA","ACURA",
-    "MITSU","CIVIC","PILOT","RIDGE","FORCE","RODEO","DRIVE","POWER","SPEED","RALLY",
-    "TRACK","SHIFT","BRAKE","TIRES","GRIPS","RACES","DRAGS","STUNT","RIDER","CHASE",
-    "MOTOR","BOOST","TURBO","DRIFT","SMILE","HAPPY","TRUST","HONOR","THANK","PROUD",
-    "TEAMS","SERVE","HELPS","READY","CARES","GUIDE","MEETS","VALUE","BONUS","FAIRS",
-    "CLEAR","BRITE","BRAVE","LOANS","LEASE","TERMS","RATES","FEES","TAXES","COSTS",
-    "PRICE","VALUE","BONUS","DEALS","FUNDS","MONEY","CHECK","ORDER","STOCK","CLAIM",
-    "APPLY","SCORE","BUYER","ALIGN","CLEAN","READY","FIXED","LOCAL","VISIT","TESTS",
-    "SHIFT","RIDES","MOTOR","FLUID","SPARK","SMOKE","DRYER","SHINE","BOOST","DRIFT",
-    "TRIPS","ROADS","NORTH","SOUTH","EASTS","WESTS","STATE","METRO","URBAN","RURAL",
-    "RIVER","TRAIL","TRADE","MODEL","PILOT","CIVIC","ACURA","HONDA","MITSU","OWNER",
-    "POWER","SPEED","SHIFT","DRIVE","RIDGE","BEACH","WAVES","WATER","FLOAT","FISHY",
-    "CATCH","REELS","HOOKS","BOATS","LAKES","SHORE","RANGE","RIDER","HELMS","BRISK",
-    "SUNNY","CLOUD","STORM","CLEAR","CLEAN","READY","SMILE"
+      "DRIVE","BRAKE","RIDES","MOTOR","GEARS","ALIGN","SPEED","QUICK","TOTAL","SPORT",
+      "COUPE","SEDAN","TRUCK","AXLES","CABIN","PANEL","GUARD","TUNER","FLEET","LEASE",
+      "LOANS","TITLE","TRADE","MODEL","VALUE","PRICE","QUOTE","OFFER","BONUS","SAVES",
+      "DEALS","SALES","OWNER","POWER","FIXED","PARTS","PAINT","WELDS","TOOLS","TORCH",
+      "METAL","FRAME","CLIPS","WIRES","HOSES","BELTS","PUMPS","CLEAN","SCRUB","TOWED",
+      "TOWEL","WAXED","SHINE","BOATS","CANOE","KAYAK","OCEAN","RIVER","SHORE","BEACH",
+      "HULLS","ROPES","CLEAT","WINCH","FLOAT","WATER","WAVES","TIDES","SWIMS","FISHY",
+      "LURES","REELS","HOOKS","BAITS","CATCH","STERN","BOWED","DOCKS","WHARF","RIDER",
+      "DUSTY","DUNES","TRAIL","TRACK","RALLY","CHAIN","GLOVE","HELMS","SUITS","ROLLS",
+      "JUMPS","FLEET","DAILY","CHECK","READY","MILES","ROADS","TRIPS","VISIT","LOCAL",
+      "RIDES","SALES","DEALS","BONUS","VALUE","PRICE","OFFER","QUOTE","TRADE","LEASE",
+      "LOANS","MODEL","STOCK","ORDER","TITLE","TAXES","FEES","COSTS","BUYER","RATES",
+      "TERMS","TRUST","SERVE","CARES","GUIDE","MEETS","HAPPY","SMILE","HONOR","PROUD",
+      "SUNNY","CLOUD","STORM","WINDS","RAINY","CLEAR","BRISK","CHILL","SNOWY","ICING",
+      "FROST","WETLY","DRYER","MOIST","HAZY","GUSTS","HEATS","HOTLY","HUMID","ROADS",
+      "ROUTE","NORTH","SOUTH","EASTS","WESTS","HILLS","RIDGE","RIVER","PLAZA","TOWNS",
+      "CITIES","RURAL","URBAN","LOCAL","METRO","STATE","PATHS","RANCH","VALVE","SPARK",
+      "FIRES","TUNED","OILED","OILER","SHAFT","CRANK","FLUID","MOTOR","WIRES","PIPES",
+      "LINES","JOINT","LEVER","BOOST","TURBO","FUMES","SMOKE","BLADE","SUNNY","LAKES",
+      "PONDS","WATER","WAVES","BEACH","TIDES","SAILS","CREST","BOARD","BOATS","SHIPS",
+      "DOCKS","WHARF","OCEAN","SHORE","COVE","STORM","SWIMS","FLOAT","HONDA","ACURA",
+      "MITSU","CIVIC","PILOT","RIDGE","FORCE","RODEO","DRIVE","POWER","SPEED","RALLY",
+      "TRACK","SHIFT","BRAKE","TIRES","GRIPS","RACES","DRAGS","STUNT","RIDER","CHASE",
+      "MOTOR","BOOST","TURBO","DRIFT","SMILE","HAPPY","TRUST","HONOR","THANK","PROUD",
+      "TEAMS","SERVE","HELPS","READY","CARES","GUIDE","MEETS","VALUE","BONUS","FAIRS",
+      "CLEAR","BRITE","BRAVE","LOANS","LEASE","TERMS","RATES","FEES","TAXES","COSTS",
+      "PRICE","VALUE","BONUS","DEALS","FUNDS","MONEY","CHECK","ORDER","STOCK","CLAIM",
+      "APPLY","SCORE","BUYER","ALIGN","CLEAN","READY","FIXED","LOCAL","VISIT","TESTS",
+      "SHIFT","RIDES","MOTOR","FLUID","SPARK","SMOKE","DRYER","SHINE","BOOST","DRIFT",
+      "TRIPS","ROADS","NORTH","SOUTH","EASTS","WESTS","STATE","METRO","URBAN","RURAL",
+      "RIVER","TRAIL","TRADE","MODEL","PILOT","CIVIC","ACURA","HONDA","MITSU","OWNER",
+      "POWER","SPEED","SHIFT","DRIVE","RIDGE","BEACH","WAVES","WATER","FLOAT","FISHY",
+      "CATCH","REELS","HOOKS","BOATS","LAKES","SHORE","RANGE","RIDER","HELMS","BRISK",
+      "SUNNY","CLOUD","STORM","CLEAR","CLEAN","READY","SMILE"
     ];
 
-    // Deterministic "word of the day" based on the date
+    // --- Daily word + one-game-per-day helpers ---
+
+    const VERDLE_LAST_PLAYED_KEY = "verdleLastPlayedDay";
+
+    // Safer "day index" that avoids timezone/MS quirks: YYYYMMDD as integer
     function getDayIndex() {
-      const msPerDay = 1000 * 60 * 60 * 24;
-      const todayMs = Date.now();
-      return Math.floor(todayMs / msPerDay);
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = d.getMonth() + 1; // 1–12
+      const day = d.getDate();    // 1–31
+      return y * 10000 + m * 100 + day; // e.g. 20251125
+    }
+
+    // localStorage safety (Safari private mode etc.)
+    let verdleStorageOK = true;
+    try {
+      localStorage.setItem("__verdle_test", "1");
+      localStorage.removeItem("__verdle_test");
+    } catch (e) {
+      verdleStorageOK = false;
+    }
+
+    function hasPlayedToday() {
+      if (!verdleStorageOK) return false;
+      const stored = localStorage.getItem(VERDLE_LAST_PLAYED_KEY);
+      const todayStr = String(getDayIndex());
+      return stored === todayStr;
+    }
+
+    function markPlayedToday() {
+      if (!verdleStorageOK) return;
+      const todayStr = String(getDayIndex());
+      localStorage.setItem(VERDLE_LAST_PLAYED_KEY, todayStr);
     }
 
     function getDailyWord() {
@@ -270,9 +300,18 @@
       currentCol = 0;
       gameOver = false;
       clearBoard();
-      setMessage("Type any 5 letters and press Enter.");
-      document.getElementById("resetBtn").disabled = false;
-      focusHiddenInput();
+
+      const resetBtn = document.getElementById("resetBtn");
+
+      if (hasPlayedToday()) {
+        gameOver = true;
+        setMessage("You already played Verdle today. Come back tomorrow!");
+        if (resetBtn) resetBtn.disabled = true;
+      } else {
+        setMessage("Type any 5 letters and press Enter.");
+        if (resetBtn) resetBtn.disabled = false;
+        focusHiddenInput();
+      }
       // console.log("Solution:", solution); // uncomment to peek
     }
 
@@ -294,10 +333,9 @@
       document.getElementById("message").textContent = msg;
     }
 
-    function handleKeyDown(e) {
+    // Core key-handling logic shared by desktop + mobile
+    function handleKey(key) {
       if (gameOver) return;
-
-      const key = e.key;
 
       if (key === "Enter") {
         if (currentCol === WORD_LENGTH) {
@@ -322,6 +360,11 @@
       }
     }
 
+    // Desktop / hardware keyboard
+    function handleKeyDown(e) {
+      handleKey(e.key);
+    }
+
     function submitGuess() {
       // Build the guess string from the current row
       let guess = "";
@@ -338,10 +381,13 @@
         tile.classList.add(result[c]);
       }
 
+      const resetBtn = document.getElementById("resetBtn");
+
       if (guess === solution) {
         setMessage("You got it! 🎉");
         gameOver = true;
-        document.getElementById("resetBtn").disabled = true; // optional
+        markPlayedToday();
+        if (resetBtn) resetBtn.disabled = true; // optional
         return;
       }
 
@@ -351,7 +397,8 @@
       if (currentRow === MAX_GUESSES) {
         setMessage(`Out of guesses! The word was ${solution}.`);
         gameOver = true;
-        document.getElementById("resetBtn").disabled = true; // optional
+        markPlayedToday();
+        if (resetBtn) resetBtn.disabled = true; // optional
       } else {
         setMessage("Keep going!");
       }
@@ -395,11 +442,23 @@
     const hiddenInput = document.getElementById("hiddenInput");
 
     function focusHiddenInput() {
-      // Focusing must usually happen in response to a user gesture on mobile,
-      // so we also hook this up to click/touch events below.
       if (hiddenInput) {
         hiddenInput.focus();
       }
+    }
+
+    // When the user types into the hidden input (Android/iOS), feed characters into handleKey
+    if (hiddenInput) {
+      hiddenInput.addEventListener("input", (e) => {
+        const value = e.target.value;
+        if (!value) return;
+
+        const char = value[value.length - 1];
+        e.target.value = "";
+
+        // Only letters go through here; Enter/Backspace come from keydown usually
+        handleKey(char);
+      });
     }
 
     // Re-focus the hidden input when the user taps anywhere
@@ -417,4 +476,3 @@
   </script>
 </body>
 </html>
-
