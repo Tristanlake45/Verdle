@@ -2,33 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Vern Eide Wordle</title>
+  <title>VERDLE - The Vern Eide Word Game</title>
+
+  <!-- Mobile viewport so it scales properly on phones -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
   <style>
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #121213;
       color: #fff;
       display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
+      align-items: flex-start;
       min-height: 100vh;
       margin: 0;
-      padding-top: 40px;
+      padding: 16px 0;
+    }
+
+    #game-container {
+      width: 100%;
+      max-width: 420px;
+      padding: 0 12px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
 
     h1 {
       letter-spacing: 0.2em;
       font-size: 28px;
-      margin-bottom: 4px;
+      margin: 0 0 4px 0;
+      text-align: center;
     }
 
     h2 {
       font-size: 14px;
       font-weight: 400;
-      margin-top: 0;
-      margin-bottom: 20px;
+      margin: 0 0 20px 0;
       opacity: 0.8;
+      text-align: center;
     }
 
     #board {
@@ -41,11 +55,13 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 5px;
+      justify-items: center;
     }
 
     .tile {
-      width: 60px;
-      height: 60px;
+      /* Responsive size: capped at 60px, shrinks on narrow screens */
+      width: min(60px, 16vw);
+      height: min(60px, 16vw);
       border: 2px solid #3a3a3c;
       display: flex;
       align-items: center;
@@ -95,69 +111,105 @@
       border: none;
       cursor: pointer;
     }
+
+    /* Hidden input for mobile keyboard */
+    #hiddenInput {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+      width: 1px;
+      height: 1px;
+      border: 0;
+      padding: 0;
+      margin: 0;
+    }
+
+    /* Slight size tweaks for very small screens */
+    @media (max-width: 480px) {
+      .tile {
+        width: 14vw;
+        height: 14vw;
+        font-size: 24px;
+      }
+
+      h1 {
+        font-size: 24px;
+      }
+    }
   </style>
 </head>
 <body>
+  <div id="game-container">
     <h1>VERDLE</h1>
     <h2>The Vern Eide Word Game</h2>
-    
 
-  <div id="board">
-    <!-- 6 rows × 5 tiles -->
-    <div class="row">
-      <div class="tile" id="tile-0-0"></div>
-      <div class="tile" id="tile-0-1"></div>
-      <div class="tile" id="tile-0-2"></div>
-      <div class="tile" id="tile-0-3"></div>
-      <div class="tile" id="tile-0-4"></div>
+    <div id="board">
+      <!-- 6 rows × 5 tiles -->
+      <div class="row">
+        <div class="tile" id="tile-0-0"></div>
+        <div class="tile" id="tile-0-1"></div>
+        <div class="tile" id="tile-0-2"></div>
+        <div class="tile" id="tile-0-3"></div>
+        <div class="tile" id="tile-0-4"></div>
+      </div>
+      <div class="row">
+        <div class="tile" id="tile-1-0"></div>
+        <div class="tile" id="tile-1-1"></div>
+        <div class="tile" id="tile-1-2"></div>
+        <div class="tile" id="tile-1-3"></div>
+        <div class="tile" id="tile-1-4"></div>
+      </div>
+      <div class="row">
+        <div class="tile" id="tile-2-0"></div>
+        <div class="tile" id="tile-2-1"></div>
+        <div class="tile" id="tile-2-2"></div>
+        <div class="tile" id="tile-2-3"></div>
+        <div class="tile" id="tile-2-4"></div>
+      </div>
+      <div class="row">
+        <div class="tile" id="tile-3-0"></div>
+        <div class="tile" id="tile-3-1"></div>
+        <div class="tile" id="tile-3-2"></div>
+        <div class="tile" id="tile-3-3"></div>
+        <div class="tile" id="tile-3-4"></div>
+      </div>
+      <div class="row">
+        <div class="tile" id="tile-4-0"></div>
+        <div class="tile" id="tile-4-1"></div>
+        <div class="tile" id="tile-4-2"></div>
+        <div class="tile" id="tile-4-3"></div>
+        <div class="tile" id="tile-4-4"></div>
+      </div>
+      <div class="row">
+        <div class="tile" id="tile-5-0"></div>
+        <div class="tile" id="tile-5-1"></div>
+        <div class="tile" id="tile-5-2"></div>
+        <div class="tile" id="tile-5-3"></div>
+        <div class="tile" id="tile-5-4"></div>
+      </div>
     </div>
-    <div class="row">
-      <div class="tile" id="tile-1-0"></div>
-      <div class="tile" id="tile-1-1"></div>
-      <div class="tile" id="tile-1-2"></div>
-      <div class="tile" id="tile-1-3"></div>
-      <div class="tile" id="tile-1-4"></div>
-    </div>
-    <div class="row">
-      <div class="tile" id="tile-2-0"></div>
-      <div class="tile" id="tile-2-1"></div>
-      <div class="tile" id="tile-2-2"></div>
-      <div class="tile" id="tile-2-3"></div>
-      <div class="tile" id="tile-2-4"></div>
-    </div>
-    <div class="row">
-      <div class="tile" id="tile-3-0"></div>
-      <div class="tile" id="tile-3-1"></div>
-      <div class="tile" id="tile-3-2"></div>
-      <div class="tile" id="tile-3-3"></div>
-      <div class="tile" id="tile-3-4"></div>
-    </div>
-    <div class="row">
-      <div class="tile" id="tile-4-0"></div>
-      <div class="tile" id="tile-4-1"></div>
-      <div class="tile" id="tile-4-2"></div>
-      <div class="tile" id="tile-4-3"></div>
-      <div class="tile" id="tile-4-4"></div>
-    </div>
-    <div class="row">
-      <div class="tile" id="tile-5-0"></div>
-      <div class="tile" id="tile-5-1"></div>
-      <div class="tile" id="tile-5-2"></div>
-      <div class="tile" id="tile-5-3"></div>
-      <div class="tile" id="tile-5-4"></div>
-    </div>
-  </div>
 
-  <div id="message"></div>
-  <div id="controls">
-    <button id="resetBtn">Play Again</button>
+    <div id="message"></div>
+    <div id="controls">
+      <button id="resetBtn">Play Again</button>
+    </div>
+
+    <!-- Hidden input to trigger mobile keyboard -->
+    <input
+      id="hiddenInput"
+      type="text"
+      inputmode="latin"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="characters"
+      spellcheck="false"
+    />
   </div>
 
   <script>
     const WORD_LENGTH = 5;
     const MAX_GUESSES = 6;
 
-    // Vern Eide–themed word bank (all 5 letters, uppercase)
     const VERN_EIDE_WORDS = [
     "DRIVE","BRAKE","RIDES","MOTOR","GEARS","ALIGN","SPEED","QUICK","TOTAL","SPORT",
     "COUPE","SEDAN","TRUCK","AXLES","CABIN","PANEL","GUARD","TUNER","FLEET","LEASE",
@@ -194,7 +246,6 @@
     "CATCH","REELS","HOOKS","BOATS","LAKES","SHORE","RANGE","RIDER","HELMS","BRISK",
     "SUNNY","CLOUD","STORM","CLEAR","CLEAN","READY","SMILE"
     ];
-    
 
     // Deterministic "word of the day" based on the date
     function getDayIndex() {
@@ -214,24 +265,16 @@
     let gameOver = false;
 
     function initGame() {
-        solution = getDailyWord();
-        currentRow = 0;
-        currentCol = 0;
-        gameOver = false;
-        clearBoard();
-      
-        if (hasPlayedToday()) {
-          // Lock the game for today
-          gameOver = true;
-          setMessage("You already played VERDLE today. Come back tomorrow!");
-          // Optional: disable the reset button
-          document.getElementById("resetBtn").disabled = true;
-        } else {
-          setMessage("Type any 5 letters and press Enter.");
-          document.getElementById("resetBtn").disabled = false;
-        }
-      }
-      
+      solution = getDailyWord();
+      currentRow = 0;
+      currentCol = 0;
+      gameOver = false;
+      clearBoard();
+      setMessage("Type any 5 letters and press Enter.");
+      document.getElementById("resetBtn").disabled = false;
+      focusHiddenInput();
+      // console.log("Solution:", solution); // uncomment to peek
+    }
 
     function clearBoard() {
       for (let r = 0; r < MAX_GUESSES; r++) {
@@ -250,23 +293,6 @@
     function setMessage(msg) {
       document.getElementById("message").textContent = msg;
     }
-    const VERDLE_LAST_PLAYED_KEY = "verdleLastPlayedDay";
-
-    function getTodayDayIndex() {
-      return getDayIndex(); // just alias for clarity
-    }
-    
-    function hasPlayedToday() {
-      const stored = localStorage.getItem(VERDLE_LAST_PLAYED_KEY);
-      const today = getTodayDayIndex();
-      return stored !== null && Number(stored) === today;
-    }
-    
-    function markPlayedToday() {
-      const today = getTodayDayIndex();
-      localStorage.setItem(VERDLE_LAST_PLAYED_KEY, String(today));
-    }
-    
 
     function handleKeyDown(e) {
       if (gameOver) return;
@@ -297,40 +323,39 @@
     }
 
     function submitGuess() {
-        let guess = "";
-        for (let c = 0; c < WORD_LENGTH; c++) {
-          guess += getTile(currentRow, c).textContent;
-        }
-      
-        const result = evaluateGuess(guess, solution);
-      
-        for (let c = 0; c < WORD_LENGTH; c++) {
-          const tile = getTile(currentRow, c);
-          tile.classList.remove("correct", "present", "absent");
-          tile.classList.add(result[c]);
-        }
-      
-        if (guess === solution) {
-          setMessage("You got it! 🎉");
-          gameOver = true;
-          markPlayedToday();                 // 👈 mark completion
-          document.getElementById("resetBtn").disabled = true; // optional
-          return;
-        }
-      
-        currentRow++;
-        currentCol = 0;
-      
-        if (currentRow === MAX_GUESSES) {
-          setMessage(`Out of guesses! The word was ${solution}.`);
-          gameOver = true;
-          markPlayedToday();                 // 👈 mark completion
-          document.getElementById("resetBtn").disabled = true; // optional
-        } else {
-          setMessage("Keep going!");
-        }
+      // Build the guess string from the current row
+      let guess = "";
+      for (let c = 0; c < WORD_LENGTH; c++) {
+        guess += getTile(currentRow, c).textContent;
       }
-      
+
+      const result = evaluateGuess(guess, solution);
+
+      // Apply colors to tiles
+      for (let c = 0; c < WORD_LENGTH; c++) {
+        const tile = getTile(currentRow, c);
+        tile.classList.remove("correct", "present", "absent");
+        tile.classList.add(result[c]);
+      }
+
+      if (guess === solution) {
+        setMessage("You got it! 🎉");
+        gameOver = true;
+        document.getElementById("resetBtn").disabled = true; // optional
+        return;
+      }
+
+      currentRow++;
+      currentCol = 0;
+
+      if (currentRow === MAX_GUESSES) {
+        setMessage(`Out of guesses! The word was ${solution}.`);
+        gameOver = true;
+        document.getElementById("resetBtn").disabled = true; // optional
+      } else {
+        setMessage("Keep going!");
+      }
+    }
 
     // Returns array of "correct", "present", "absent" for each letter
     function evaluateGuess(guess, solution) {
@@ -366,10 +391,30 @@
       return result;
     }
 
+    // Mobile keyboard support via hidden input
+    const hiddenInput = document.getElementById("hiddenInput");
+
+    function focusHiddenInput() {
+      // Focusing must usually happen in response to a user gesture on mobile,
+      // so we also hook this up to click/touch events below.
+      if (hiddenInput) {
+        hiddenInput.focus();
+      }
+    }
+
+    // Re-focus the hidden input when the user taps anywhere
+    document.addEventListener("click", focusHiddenInput);
+    document.addEventListener("touchstart", focusHiddenInput, { passive: true });
+
     document.addEventListener("keydown", handleKeyDown);
     document.getElementById("resetBtn").addEventListener("click", initGame);
 
-    initGame();
+    // Initial setup
+    window.addEventListener("load", () => {
+      initGame();
+      focusHiddenInput();
+    });
   </script>
 </body>
 </html>
+
